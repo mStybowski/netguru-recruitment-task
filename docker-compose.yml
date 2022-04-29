@@ -1,0 +1,49 @@
+version: "3.2"
+services:
+  auth-service:
+    command: node ./src/server.js
+    build:
+      context: auth-service
+      dockerfile: Dockerfile
+    ports:
+      - published: 3009
+        target: 80
+        mode: host
+        protocol: tcp
+    volumes:
+      - ./auth-service:/app/
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+      PORT: ${AUTH_PORT}
+  api-solution:
+    command: node ./index.js
+    build:
+      context: api-solution
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+      - auth-service
+    ports:
+      - published: 3010
+        target: 80
+        mode: host
+        protocol: tcp
+    volumes:
+      - ./api-solution:/app/
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+      PORT: ${API_PORT}
+      MOVIES_API_KEY: ${MOVIES_API_KEY}
+  db:
+    image: postgres:13-alpine
+    container_name: app_database
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+    ports:
+      - published: 5432
+        target: 5432
+        mode: host
+        protocol: tcp
+    restart: unless-stopped
