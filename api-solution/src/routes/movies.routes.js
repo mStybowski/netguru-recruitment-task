@@ -3,13 +3,12 @@ import {
   addMovie,
   getAllCreatedByUser,
 } from "../controllers/movies.controller.js";
-import { verifyToken } from "../middleware/verifyToken.js";
-import { Movie } from "../models/Movie.js";
+import { verifyToken, verifyPermission } from "../middleware/movies.js";
 
 const router = express.Router();
 router.use(verifyToken);
 
-router.post("/", addMovie);
+router.post("/", verifyPermission, addMovie);
 router.get("/", getAllCreatedByUser);
 
 export default router;
