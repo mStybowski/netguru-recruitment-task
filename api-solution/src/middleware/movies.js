@@ -26,7 +26,6 @@ const verifyPermission = async (req, res, next) => {
 };
 
 const verifyToken = (req, res, next) => {
-  // TODO: Move bearer header logic to utils
   const bearerHeader = req.headers["authorization"];
 
   if (typeof bearerHeader !== "undefined") {
