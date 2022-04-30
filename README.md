@@ -4,7 +4,7 @@
 
 Simple Movie API that provide four endpoints:
 
-* `POST /movies`
+* `POST /movies` 🔑
 
     * Creates a new record in DB based on fetched data by title from [OMDb API](https://omdbapi.com/). Data are saved to the database in the following format:
 
@@ -21,7 +21,7 @@ Simple Movie API that provide four endpoints:
     * `Basic` users are restricted to create 5 movies per month (calendar
       month). `Premium` users have no limits.
 
-* `GET /movies`
+* `GET /movies` 🔑
 
     * Fetches a list of all movies created by an authorized user in the following format:
     ```
@@ -31,21 +31,54 @@ Simple Movie API that provide four endpoints:
     director: string
     userid: string
     ```
-    
+
 * `GET /`
     * Displays a simple HTML landing page.
 
 * `GET /docs`
     * Displays a simple documentation page.
 
-⚠️ To use /movies routes user has to be authorized with Bearer Token ([JWT](https://jwt.io/)) before making the
-request. The token should be passed in request's `Authorization` header in the following format:
+🔑 To use `/movies` routes user has to be authorized with Bearer Token ([JWT](https://jwt.io/)) before making the
+request.
+
+# Prerequisites
+
+You need to have `docker` and `docker-compose` installed on your computer to run the service. For Windows install [Docker Desktop](https://docs.docker.com/desktop/windows/install/).
+
+# Run locally
+
+1. Clone this repository
+2. Put `.env` file in the root directory with the following contents:
+```
+JWT_SECRET={string}
+MOVIES_API_KEY={string}
+API_PORT={number}
+AUTH_PORT={number}
+POSTGRES_PORT=number}
+POSTGRES_USER={string}
+POSTGRES_PASSWORD={string}
+POSTGRES_HOST={string}
+POSTGRES_DATABASE={string}
+```
+3. Run from root dir
 
 ```
-Authorization: Bearer <token>
+docker-compose up -d
 ```
 
-# Authorization service
+**Auth service default port: `3009`**
+
+**Api service default port: `3010`**
+
+**Database service default port: `5432`**
+
+To stop the services run:
+
+```
+docker-compose down
+```
+
+# Authorization
 
 To authorize users use auth service based on JWT tokens.
 
@@ -68,43 +101,15 @@ curl --location --request POST '0.0.0.0:3009/auth' \
 }
 ```
 
-Put received token in every request. The token is valid for 30 minutes.
-
-## Prerequisites
-
-You need to have `docker` and `docker-compose` installed on your computer to run the service
-
-## Run locally
-
-1. Clone this repository
-1. Run from root dir
+ The token should be passed in request's `Authorization` header in the following format:
 
 ```
-JWT_SECRET=secret docker-compose up -d
+Authorization: Bearer <token>
 ```
 
-By default the auth service will start on port `3000` but you can override
-the default value by setting the `APP_PORT` env var
+The token is valid for 30 minutes.
 
-```
-APP_PORT=8081 JWT_SECRET=secret docker-compose up -d
-```
-
-To stop the authorization service run
-
-```
-docker-compose down
-```
-
-## JWT Secret
-
-To generate tokens in auth service you need to provide env variable
-`JWT_SECRET`. It should be a string value. You should use the same secret in
-the API you're building to verify the JWT tokens.
-
-## Users
-
-The auth service defines two user accounts that you should use
+The auth service defines two user accounts that you should use:
 
 1. `Basic` user
 
@@ -119,66 +124,3 @@ The auth service defines two user accounts that you should use
 username: 'premium-jim'
 password: 'GBLtTyq3E_UNjFnpo9m6'
 ```
-
-## Token payload
-
-Decoding the auth token will give you access to basic information about the
-user, including its role.
-
-```
-{
-  "userId": 123,
-  "name": "Basic Thomas",
-  "role": "basic",
-  "iat": 1606221838,
-  "exp": 1606223638,
-  "iss": "https://www.netguru.com/",
-  "sub": "123"
-}
-```
-
-## Example request
-
-To authorize user call the auth service using for example `curl`. We assume
-that the auth service is running of the default port `3000`.
-
-Request
-
-```
-curl --location --request POST '0.0.0.0:3000/auth' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "username": "basic-thomas",
-    "password": "sR-_pcoow-27-6PAwCD8"
-}'
-```
-
-Response
-
-```
-{
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyMywibmFtZSI6IkJhc2ljIFRob21hcyIsInJvbGUiOiJiYXNpYyIsImlhdCI6MTYwNjIyMTgzOCwiZXhwIjoxNjA2MjIzNjM4LCJpc3MiOiJodHRwczovL3d3dy5uZXRndXJ1LmNvbS8iLCJzdWIiOiIxMjMifQ.KjZ3zZM1lZa1SB8U-W65oQApSiC70ePdkQ7LbAhpUQg"
-}
-```
-
-## Rules
-
-- Database and framework choice are on your side.
-- Your API has to be dockerized. Create `Dockerfile` and `docker-compose` and document the process of running it locally.
-- Provided solution should consist of two microservices.
-  - `Authentication Service` - provided by us to auth users
-  - `Movies Service` - created by you to handle movies data
-- Test your code.
-- Provide documentation of your API.
-- Application should be pushed to the public git repository and should have a
-  working CI/CD pipeline that runs the tests. For example you can use GitHub
-  Actions or CircleCI. Create a sample PR to show us the working CI/CD pipeline.
-
-## What will be evaluated?
-
-- Task completeness
-- Architecture
-- Code quality
-- Tests quality
-- Database design
-- Technology stack
