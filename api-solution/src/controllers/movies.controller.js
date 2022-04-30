@@ -18,6 +18,7 @@ const addMovie = async (req, res) => {
       .then((responseJSON) => {
         const { Response } = responseJSON;
         if (Response === "False" || Response === "false") {
+          // TODO: Refactor
           return Promise.reject(new Error(`Movie ${title} hasnt been found.`));
         } else {
           const newMovie = new Movie(
@@ -48,7 +49,7 @@ const getAllCreatedByUser = async (req, res) => {
   const { userId } = req.encoded;
   try {
     const { rows } = await query(
-      `SELECT title, released, genre, director, userid, created_at FROM movies WHERE userId=$1`,
+      "SELECT title, released, genre, director, userid, created_at FROM movies WHERE userId=$1",
       [userId]
     );
     if (rows) {
