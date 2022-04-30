@@ -34,6 +34,12 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       PORT: ${API_PORT}
       MOVIES_API_KEY: ${MOVIES_API_KEY}
+      PGUSER: ${POSTGRES_USER}
+      PGHOST: ${POSTGRES_HOST}
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      PGDATABASE: ${POSTGRES_DATABASE}
+      PGPORT: ${POSTGRES_PORT}
+
   db:
     image: postgres:13-alpine
     container_name: app_database
