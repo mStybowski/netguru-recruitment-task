@@ -2,8 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const { authFactory, AuthError } = require("./auth");
 
-const PORT = 80;
-const { JWT_SECRET } = process.env;
+const { JWT_SECRET, PORT } = process.env;
 
 if (!JWT_SECRET) {
   throw new Error("Missing JWT_SECRET env var. Set it and restart the server");
