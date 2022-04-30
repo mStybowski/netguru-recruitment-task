@@ -1,9 +1,5 @@
 import express from "express";
-import {
-  renderIndex,
-  renderAPIDocumentation,
-  notFound,
-} from "../controllers/index.controller.js";
+import { renderIndex, renderAPIDocumentation, notFound } from "../controllers/index.controller.js";
 
 const router = express.Router();
 

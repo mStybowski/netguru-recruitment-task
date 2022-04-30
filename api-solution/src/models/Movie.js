@@ -19,7 +19,7 @@ class Movie {
       );
       return rows;
     } catch (error) {
-      throw error;
+      throw new Error("Couldn't create movie!");
     }
   }
 }

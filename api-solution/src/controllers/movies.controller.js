@@ -2,65 +2,54 @@ import fetch from "node-fetch";
 import { Movie } from "../models/Movie.js";
 import { query } from "../db/index.js";
 import { dateFromString } from "../lib/date.js";
+import { respondWithJSON } from "../lib/respond.js";
 
 const { MOVIES_API_KEY } = process.env;
 
 const addMovie = async (req, res) => {
-  console.log("AddMovie controller");
-
+  const { userId, name } = req.encoded;
+  const { title } = req.body;
   try {
-    //TODO: Provide error handling
-    console.dir(req.body);
-    const { userId, name, role } = req.encoded;
-    const { title } = req.body;
-    await fetch(`https://www.omdbapi.com/?t=${title}&apikey=${MOVIES_API_KEY}`)
-      .then((fetchResponse) => fetchResponse.json())
-      .then((responseJSON) => {
-        const { Response } = responseJSON;
-        if (Response === "False" || Response === "false") {
-          // TODO: Refactor
-          return Promise.reject(new Error(`Movie ${title} hasnt been found.`));
-        } else {
-          const newMovie = new Movie(
-            {
-              ...responseJSON,
-              Released: dateFromString(responseJSON.Released),
-            },
-            userId
-          );
-          return newMovie.createMovie();
-        }
-      })
-      .then((rows) => {
-        console.dir(rows);
-        res.status(201).send(`Successfully added record for ${title}`);
-      });
+    const responseJSON = await fetchMovieData(title);
+    await addMovieToDB(responseJSON, userId);
+    respondWithJSON(res, 201, `${name} Successfully added record for ${title}`);
   } catch (error) {
-    console.error("addMovie", error);
-    res.status(200).send({
-      message: `${title} hasn't been found in OMDb database.`,
-    });
+    respondWithJSON(res, 404, `We are sorry ${name}, but ${title} could not be added to DB.`);
   }
 };
 
-const getAllCreatedByUser = async (req, res) => {
-  console.log("getAllCreatedByUser controller");
+async function addMovieToDB(data, userId) {
+  const movie = new Movie(
+    {
+      ...data,
+      Released: dateFromString(data.Released),
+    },
+    userId
+  );
+  await movie.createMovie();
+}
 
+async function fetchMovieData(title) {
+  const response = await fetch(`https://www.omdbapi.com/?t=${title}&apikey=${MOVIES_API_KEY}`);
+  const responseJSON = await response.json();
+  const { Response } = responseJSON;
+  if (!Response || Response === "False" || Response === "false") {
+    throw new Error("No movie data at OMDb.");
+  } else {
+    return responseJSON;
+  }
+}
+
+const getAllCreatedByUser = async (req, res) => {
   const { userId } = req.encoded;
   try {
-    const { rows } = await query(
-      "SELECT title, released, genre, director, userid, created_at FROM movies WHERE userId=$1",
-      [userId]
-    );
+    const { rows } = await query("SELECT title, released, genre, director, userid, created_at FROM movies WHERE userId=$1", [userId]);
     if (rows) {
-      console.log(rows);
-      res.json(rows);
+      res.status(200).json(rows);
     }
   } catch (error) {
     console.error("getAllCreatedByUser", error);
-    res.status(500).send({
-      message: "There was an error at getAll controller.",
-    });
+    respondWithJSON(res, 500, "There was an error at getAll controller.");
   }
 };
 
