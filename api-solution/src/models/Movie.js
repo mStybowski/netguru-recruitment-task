@@ -1,4 +1,4 @@
-import { query } from "../db/index.js";
+import { query } from '../db/index.js';
 
 class Movie {
   constructor({ Title, Released, Genre, Director }, userId) {

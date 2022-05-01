@@ -1,4 +1,4 @@
-import pg from "pg";
+import pg from 'pg';
 
 const pool = new pg.Pool();
 
@@ -7,10 +7,10 @@ const query = async (text, params) => {
   try {
     const res = await pool.query(text, params);
     const duration = Date.now() - start;
-    console.log("executed query", { text, duration, rows: res.rowCount });
+    console.log('executed query', { text, duration, rows: res.rowCount });
     return res;
   } catch (error) {
-    console.log("error in query", { text });
+    console.log('error in query', { text });
     throw error;
   }
 };

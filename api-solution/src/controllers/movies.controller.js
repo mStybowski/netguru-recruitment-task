@@ -1,8 +1,7 @@
-import fetch from "node-fetch";
-import { Movie } from "../models/Movie.js";
-import { query } from "../db/index.js";
-import { dateFromString } from "../lib/date.js";
-import { respondWithJSON } from "../lib/respond.js";
+import fetch from 'node-fetch';
+import { Movie } from '../models/Movie.js';
+import { query } from '../db/index.js';
+import { dateFromString, respondWithJSON } from '../lib/index.js';
 
 const { MOVIES_API_KEY } = process.env;
 
@@ -33,8 +32,8 @@ async function fetchMovieData(title) {
   const response = await fetch(`https://www.omdbapi.com/?t=${title}&apikey=${MOVIES_API_KEY}`);
   const responseJSON = await response.json();
   const { Response } = responseJSON;
-  if (!Response || Response === "False" || Response === "false") {
-    throw new Error("No movie data at OMDb.");
+  if (!Response || Response === 'False' || Response === 'false') {
+    throw new Error('No movie data at OMDb.');
   } else {
     return responseJSON;
   }
@@ -43,13 +42,13 @@ async function fetchMovieData(title) {
 const getMoviesController = async (req, res) => {
   const { userId } = req.encoded;
   try {
-    const { rows } = await query("SELECT title, released, genre, director, userid, created_at FROM movies WHERE userId=$1", [userId]);
+    const { rows } = await query('SELECT title, released, genre, director, userid, created_at FROM movies WHERE userId=$1', [userId]);
     if (rows) {
       res.status(200).json(rows);
     }
   } catch (error) {
-    console.error("getMoviesController", error);
-    respondWithJSON(res, 500, "There was an error at getAll controller.");
+    console.error('getMoviesController', error);
+    respondWithJSON(res, 500, 'There was an error at getAll controller.');
   }
 };
 

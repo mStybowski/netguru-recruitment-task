@@ -1,8 +1,8 @@
-import express from "express";
-import cors from "cors";
-import bodyParser from "body-parser";
-import mountRoutes from "./routes/index.js";
-import { createMoviesTable } from "./db/index.js";
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import mountRoutes from './routes/index.js';
+import { createMoviesTable } from './db/index.js';
 
 const { PORT } = process.env;
 
@@ -27,7 +27,7 @@ function startServer() {
 function stopServer() {
   return new Promise((resolve) =>
     server.close(() => {
-      console.log("Server stopped");
+      console.log('Server stopped');
       resolve();
     })
   );
