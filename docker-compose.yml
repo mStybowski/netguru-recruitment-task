@@ -16,7 +16,7 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       PORT: ${AUTH_PORT:-80}
   api-solution:
-    command: node ./index.js
+    command: node ./src/index.js
     build:
       context: api-solution
       dockerfile: Dockerfile

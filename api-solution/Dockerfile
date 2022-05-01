@@ -6,6 +6,5 @@ COPY ./package.json ./package-lock.json ./
 RUN npm install
 
 COPY ./src ./src
-COPY ./index.js ./index.js
 
-CMD ["node", "./index.js"]
+CMD ["node", "./src/index.js"]
