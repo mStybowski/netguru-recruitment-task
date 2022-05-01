@@ -6,19 +6,19 @@ import { respondWithJSON } from "../lib/respond.js";
 
 const { MOVIES_API_KEY } = process.env;
 
-const addMovie = async (req, res) => {
+const addMovieController = async (req, res) => {
   const { userId, name } = req.encoded;
   const { title } = req.body;
   try {
     const responseJSON = await fetchMovieData(title);
-    await addMovieToDB(responseJSON, userId);
+    await createMovieRecord(responseJSON, userId);
     respondWithJSON(res, 201, `${name} Successfully added record for ${title}`);
   } catch (error) {
     respondWithJSON(res, 404, `We are sorry ${name}, but ${title} could not be added to DB.`);
   }
 };
 
-async function addMovieToDB(data, userId) {
+async function createMovieRecord(data, userId) {
   const movie = new Movie(
     {
       ...data,
@@ -40,7 +40,7 @@ async function fetchMovieData(title) {
   }
 }
 
-const getAllCreatedByUser = async (req, res) => {
+const getMoviesController = async (req, res) => {
   const { userId } = req.encoded;
   try {
     const { rows } = await query("SELECT title, released, genre, director, userid, created_at FROM movies WHERE userId=$1", [userId]);
@@ -48,9 +48,9 @@ const getAllCreatedByUser = async (req, res) => {
       res.status(200).json(rows);
     }
   } catch (error) {
-    console.error("getAllCreatedByUser", error);
+    console.error("getMoviesController", error);
     respondWithJSON(res, 500, "There was an error at getAll controller.");
   }
 };
 
-export { addMovie, getAllCreatedByUser };
+export { addMovieController, getMoviesController };
