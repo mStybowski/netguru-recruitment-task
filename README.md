@@ -84,10 +84,13 @@ You need to have `docker` and `docker-compose` installed on your computer to run
 2. Put `.env` file in the root directory with the following contents:
 ```
 JWT_SECRET={string}
-MOVIES_API_KEY={string}
+MOVIES_API_KEY={You need to ask OMDb for the key}
+DOCKER_EXPOSE_APP_PORT:{number}
+DOCKER_EXPOSE_AUTH_PORT:{number}
+DOCKER_EXPOSE_DB_PORT:{number}
 API_PORT={number}
 AUTH_PORT={number}
-POSTGRES_PORT=number}
+POSTGRES_PORT={number}
 POSTGRES_USER={string}
 POSTGRES_PASSWORD={string}
 POSTGRES_HOST={string}
