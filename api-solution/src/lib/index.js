@@ -10,4 +10,6 @@ const respondWithJSON = (res, statusCode, message) => {
   });
 };
 
-export { dateFromString, respondWithJSON };
+const adder = (a, b) => a + b;
+
+export { dateFromString, respondWithJSON, adder };

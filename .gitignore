@@ -1,5 +1,6 @@
 node_modules
 api-solution/node_modules
+api-solution/coverage
 auth-service/node_modules
 .env
 .DS_Store
