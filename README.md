@@ -1,5 +1,7 @@
 # Simple Movies API 🎬
 
+[![Pipeline](https://github.com/mStybowski/netguru-recruitment-task/actions/workflows/actions.yml/badge.svg)](https://github.com/mStybowski/netguru-recruitment-task/actions/workflows/actions.yml)
+
 **🛠️Tech stack:** [Node.js](https://nodejs.org/en/), [Express.js](https://expressjs.com/), [PostgreSQL](https://www.postgresql.org/), [Docker](https://www.docker.com/)
 
 Simple Movie API that provide four endpoints:
