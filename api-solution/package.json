@@ -1,8 +1,8 @@
 {
-  "name": "netguru-recruitment-task",
+  "name": "simple-movie-api",
   "type": "module",
   "version": "1.0.1",
-  "description": "Recruitment task for Netguru Node.js",
+  "description": "Simple API that uses omdb",
   "main": "index.js",
   "scripts": {
     "test": "jest"
