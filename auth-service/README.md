@@ -1,7 +1,5 @@
 # Auth-service
 
-We'd like you to build a simple Movie API. It should provide two endpoints:
-
 1. `POST /movies`
    1. Allows creating a movie object based on movie title passed in the request body
    2. Based on the title additional movie details should be fetched from
@@ -100,7 +98,7 @@ user, including its role.
 
 ## Example request
 
-To authorize user call the auth service using for example `curl`. We assume
+To authorize user call the auth service using for example `curl`. I assume
 that the auth service is running of the default port `3000`.
 
 Request
@@ -122,24 +120,3 @@ Response
 }
 ```
 
-## Rules
-
-- Database and framework choice are on your side.
-- Your API has to be dockerized. Create `Dockerfile` and `docker-compose` and document the process of running it locally.
-- Provided solution should consist of two microservices.
-  - `Authentication Service` - provided by us to auth users
-  - `Movies Service` - created by you to handle movies data
-- Test your code.
-- Provide documentation of your API.
-- Application should be pushed to the public git repository and should have a
-  working CI/CD pipeline that runs the tests. For example you can use GitHub
-  Actions or CircleCI. Create a sample PR to show us the working CI/CD pipeline.
-
-## What will be evaluated?
-
-- Task completeness
-- Architecture
-- Code quality
-- Tests quality
-- Database design
-- Technology stack
