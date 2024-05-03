@@ -98,7 +98,7 @@ user, including its role.
 
 ## Example request
 
-To authorize user call the auth service using for example `curl`. I assume
+To authorize the user call the auth service using for example `curl`. I assume
 that the auth service is running of the default port `3000`.
 
 Request
