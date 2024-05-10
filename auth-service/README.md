@@ -3,8 +3,7 @@
 1. `POST /movies`
    1. Allows creating a movie object based on movie title passed in the request body
    2. Based on the title additional movie details should be fetched from
-      https://omdbapi.com/ and saved to the database. Data we would like you to
-      fetch from OMDb API:
+      https://omdbapi.com/ and saved to the database. Data you can fetch from OMDb API:
    ```
      Title: string
      Released: date
