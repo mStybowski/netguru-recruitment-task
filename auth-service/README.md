@@ -90,7 +90,7 @@ user, including its role.
   "role": "basic",
   "iat": 1606221838,
   "exp": 1606223638,
-  "iss": "https://www.netguru.com/",
+  "iss": "https://www.stybowski.pl/",
   "sub": "123"
 }
 ```
