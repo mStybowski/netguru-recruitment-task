@@ -34,7 +34,7 @@ const authFactory = (secret) => (username, password) => {
     },
     secret,
     {
-      issuer: "https://www.netguru.com/",
+      issuer: "https://www.stybowski.pl/",
       subject: `${user.id}`,
       expiresIn: 30 * 60,
     }
